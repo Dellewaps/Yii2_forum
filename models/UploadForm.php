@@ -23,16 +23,10 @@ class UploadForm extends Model
     {
         
             //$path = $this->uploadPath() . $this->imageFile->namespace . '.' . $this->imageFile->extension;
-            if ($this->validate()) {
-                //$time = time();
-    
-            $this->imageFile->saveAs('uploads/'.$this->imageFile->basename.'.'.$this->imageFile->extension);
-            // if (is_writable($this->imageFile)) {
-            //     echo 'The file is writable';
-            // } else {
-            //     echo 'The file is not writable';
-            // }
-            $this->image = $this->imageFile;
+            if ($this->validate()) {   
+                $this->imageFile->saveAs('uploads/'.$this->imageFile->basename.'.'.$this->imageFile->extension);
+            
+                $this->image = $this->imageFile;
             
             return true;
         } else {

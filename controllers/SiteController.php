@@ -15,6 +15,28 @@ use app\models\UploadForm;
 class SiteController extends Controller
 {
 
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $model = new UploadForm();
+        if (Yii::$app->request->isPost) {
+            
+            $model->imageFile = Uploadedfile::getInstance($model, 'imagefile');
+            
+            if ($model->upload()) {
+                var_dump($_FILES);
+                return;
+            }
+            
+        }
+        return $this->render('index', ['model' => $model,] );
+    }
+
+    // This is for a new site. but right is useing index site
     // public function actionUpload()
     // {
     //     $model = new UploadForm();
@@ -27,7 +49,7 @@ class SiteController extends Controller
     //         }
     //     }
 
-    //     return $this->render('index', ['model' => $model]);
+    //     return $this->render('Upload', ['model' => $model]);
     // }
 
     
@@ -74,26 +96,7 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        $model = new UploadForm();
-        if (Yii::$app->request->isPost) {
-            
-            $model->imageFile = Uploadedfile::getInstance($model, 'imagefile');
-            
-            if ($model->upload()) {
-                var_dump($_FILES);
-                return;
-            }
-            
-        }
-        return $this->render('index', ['model' => $model,] );
-    }
+    
 
     /**
      * Login action.
