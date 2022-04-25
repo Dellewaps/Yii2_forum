@@ -21,9 +21,10 @@ class UploadForm extends Model
     
     public function upload()
     {
-        
-            //$path = $this->uploadPath() . $this->imageFile->namespace . '.' . $this->imageFile->extension;
-            if ($this->validate()) {   
+        //to make the upload path consistent.
+        //$path = $this->uploadPath() . $this->imageFile->namespace . '.' . $this->imageFile->extension;
+            // to validate image and save to uploads folder.
+        if ($this->validate()) {   
                 $this->imageFile->saveAs('uploads/'.$this->imageFile->basename.'.'.$this->imageFile->extension);
             
                 $this->image = $this->imageFile;
@@ -34,7 +35,7 @@ class UploadForm extends Model
             return false;
         }
     }
-
+    // The path to where the image should be uploaded
     public function uploadPath(){
         return 'uploads/';
     }
