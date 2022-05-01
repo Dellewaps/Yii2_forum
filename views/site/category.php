@@ -30,7 +30,7 @@ $this->title = 'Resize image';
                             'attribute' => 'name',   
                             'format'=>'raw',
                             'value'=>function ($model) {
-                                return Html::a($model->name, ['/Category', 'id'=>$model->id], ['class' => 'getCategorybyid', ]);
+                                return Html::a($model->name, ['/Subcategory', 'id'=>$model->id], ['class' => 'getSubcategorybyid', ]);
                             }
                         ],
                         [
@@ -52,8 +52,8 @@ $this->registerJs("
 $(function () { 
     $('.category').click(function () {
         $('#category')
-            .modal('Category')
-            .find('#getCategorybyid')
+            .modal('Subcategory')
+            .find('#getSubcategorybyid')
             .load($(this).attr('value'));
     });
 });

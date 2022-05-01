@@ -12,7 +12,7 @@ $this->title = 'Resize image';
 <div class="site-index">
 
     <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Min bedste bog forum</h1>
+        <h1 class="display-4"></h1>
 
         
     </div>
@@ -24,14 +24,13 @@ $this->title = 'Resize image';
                 <h2>Kategorier</h2> 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'rowOptions'   => function ($model,) {
+                        return ['data-id' => $model->id];
+                    },
                     'columns' => [
                         [
                             'header' => 'Titel',
-                            'attribute' => 'name',   
-                            'format'=>'raw',
-                            'value'=>function ($model) {
-                                return Html::a($model->name, ['/Category', 'id'=>$model->id], ['class' => 'getCategorybyid', ]);
-                            }
+                            'attribute' => 'name',                            
                         ],
                         [
                             'header' => 'Beskrivelse',
@@ -49,13 +48,10 @@ $this->title = 'Resize image';
 <?php
 $this->registerJs("
 
-$(function () { 
-    $('.category').click(function () {
-        $('#category')
-            .modal('Category')
-            .find('#getCategorybyid')
-            .load($(this).attr('value'));
+    $('td').click(function (e) {
+        var id = $(this).closest('tr').data('id');
+        if(e.target == this)
+            location.href = '" . Url::to(['site/Subcategory']) . "?id=' + id;
     });
-});
 
 ");?>

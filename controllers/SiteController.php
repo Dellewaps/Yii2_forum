@@ -10,48 +10,88 @@ use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\UploadForm;
+use app\models\SignupForm;
+use app\models\Category;
+use app\models\Subcategory;
+use app\models\User;
+use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
 
     /**
      * Displays homepage.
-     *
-     * @return string
+     * With all categorys
+     * 
      */
     public function actionIndex()
-    {
-        $model = new UploadForm();
-        if (Yii::$app->request->isPost) {
-            
-            $model->imageFile = Uploadedfile::getInstance($model, 'imagefile');
-            
-            if ($model->upload()) {
-                var_dump($_FILES);
-                return;
-            }
-            
-        }
-        return $this->render('index', ['model' => $model,] );
+    {        
+        $category = new Category();
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $category->getCategory(),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 
-    // This is for a new site. but right is useing index site
-    // public function actionUpload()
-    // {
-    //     $model = new UploadForm();
+    /**
+     * Displays signup page.
+     * With form for signup
+     * and post user input for signup.
+     */
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+ 
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->signup()) {
+                
+                return $this->goHome();
+            }
+        }
+ 
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
 
-    //     if (Yii::$app->request->isPost) {
-    //         $model->imageFile = Uploadedfile::getInstance($model, 'imagefile');
-            
-    //         if ($model->upload()) {
-    //             return;
-    //         }
-    //     }
+    public function actionCategory($id)
+    {
+        $request = Yii::$app->request;
+        var_dump($request);
+        $Category = new Category();
+        $Category->getCategorybyid($id);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $Category->getCategorybyid($id),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render(['category',
+            'id' => $id,
+            'dataProvider' => $dataProvider]);
 
-    //     return $this->render('Upload', ['model' => $model]);
-    // }
+    }
 
+    public function actionSubcategory($id)
+    {
+        
+        $Subcategory = new Subcategory();
+        $Subcategory->getCategorybyid($id);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $Subcategory->getSubcategory(),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render(['subcategory',
+            'id' => $Subcategory,
+            'dataProvider' => $dataProvider]);
+
+    }
     
 
     /**
